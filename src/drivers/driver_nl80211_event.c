@@ -19,7 +19,7 @@
 #include "common/ieee802_11_defs.h"
 #include "common/ieee802_11_common.h"
 #include "driver_nl80211.h"
-
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
 static void
 nl80211_control_port_frame_tx_status(struct wpa_driver_nl80211_data *drv,
 				     const u8 *frame, size_t len,
