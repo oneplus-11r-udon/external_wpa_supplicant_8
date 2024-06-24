@@ -18,6 +18,10 @@ ifeq ($(BOARD_WLAN_DEVICE), qcwcn)
   CONFIG_DRIVER_NL80211_QCA=y
 endif
 
+ifneq ($(BOARD_WLAN_BCMDHD_SAE),)
+  CONFIG_BRCM_SAE=y
+endif
+
 include $(LOCAL_PATH)/android.config
 
 # To ignore possible wrong network configurations
@@ -73,6 +77,11 @@ endif
 
 ifeq ($(WIFI_PRIV_CMD_UPDATE_MBO_CELL_STATUS), enabled)
 L_CFLAGS += -DENABLE_PRIV_CMD_UPDATE_MBO_CELL_STATUS
+endif
+
+# BCMDHD SAE authentication offload
+ifdef CONFIG_BRCM_SAE
+L_CFLAGS += -DCONFIG_BRCM_SAE
 endif
 
 # Use Android specific directory for control interface sockets
@@ -1968,7 +1977,6 @@ LOCAL_SHARED_LIBRARIES += libutils libbase
 LOCAL_SHARED_LIBRARIES += libbinder_ndk
 LOCAL_STATIC_LIBRARIES += libwpa_aidl
 LOCAL_VINTF_FRAGMENTS := aidl/android.hardware.wifi.supplicant.xml
-LOCAL_MIN_SDK_VERSION := 34
 ifeq ($(WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY), true)
 LOCAL_INIT_RC=aidl/android.hardware.wifi.supplicant-service.rc
 endif
@@ -2074,7 +2082,6 @@ LOCAL_SHARED_LIBRARIES := \
     libutils \
     liblog \
     libssl
-LOCAL_MIN_SDK_VERSION := 34
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
     $(LOCAL_PATH)/aidl
 include $(BUILD_STATIC_LIBRARY)
